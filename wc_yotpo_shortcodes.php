@@ -46,7 +46,7 @@ class Yotpo_Shortcodes
 		if ( !class_exists( 'woocommerce' ) ) {
 			return;
 		} elseif ( !function_exists( 'wc_yotpo_get_product_data' ) ) {
-			require_once( ABSPATH . 'wp-content/plugins/yotpo-social-reviews-for-woocommerce/wc_yotpo.php' );
+			require_once( ABSPATH . 'wp-content/plugins/yotpo-social-reviews-for-woocommerce/wc_yotpo.php' ) or die();
 		}
 	}
 
