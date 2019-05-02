@@ -47,6 +47,9 @@ Get in touch, and I'll see what can be done.
 == Screenshots ==
 1. Example usage of the shortcodes.
 == Changelog ==
+= 1.1.5 =
+* Checked with WC 3.6.2 and WP 5.2
+* Minor fixes and cleanup
 = 1.1.4 =
 * OOP Rewrite.
 * Fixed requirement of Yotpo.

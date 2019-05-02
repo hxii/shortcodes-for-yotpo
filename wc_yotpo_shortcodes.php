@@ -2,12 +2,12 @@
 /*
 * Plugin Name: Shortcodes for Yotpo
 * Description: This plugin adds the ability to use shortcodes to control the placement of Yotpo widgets.
-* Version: 1.1.4
+* Version: 1.1.5
 * Author: Paul Glushak
 * Author URI: http://paulglushak.com/
 * Plugin URI: http://paulglushak.com/shortcodes-for-yotpo/
 * WC requires at least: 3.1.0
-* WC tested up to: 3.6.0
+* WC tested up to: 3.6.2
 */
 
 /*
@@ -46,7 +46,12 @@ class Yotpo_Shortcodes
 		if ( !class_exists( 'woocommerce' ) ) {
 			return;
 		} elseif ( !function_exists( 'wc_yotpo_get_product_data' ) ) {
-			require_once( ABSPATH . 'wp-content/plugins/yotpo-social-reviews-for-woocommerce/wc_yotpo.php' ) or die();
+			$plugins = get_option( 'active_plugins', array() );
+			if ( array_search('wc_yotpo.php', $plugins) ) {
+				require_once( ABSPATH . 'wp-content/plugins/yotpo-social-reviews-for-woocommerce/wc_yotpo.php' );
+			} else {
+				die();
+			}
 		}
 	}
 
@@ -58,10 +63,10 @@ class Yotpo_Shortcodes
 		$widget_product_data = wc_yotpo_get_product_data( $_product );
 		$html = "<div class='yotpo yotpo-main-widget'
 	   				data-product-id='{$product_id}'
-	   				data-name='{$widget_product_data['title']}' 
-	   				data-url='{$widget_product_data['url']}' 
-	   				data-image-url='{$widget_product_data['image-url']}' 
-	  				data-description='{$widget_product_data['description']}' 
+	   				data-name='{$widget_product_data['title']}'
+	   				data-url='{$widget_product_data['url']}'
+	   				data-image-url='{$widget_product_data['image-url']}'
+	  				data-description='{$widget_product_data['description']}'
 	  				data-lang='{$widget_product_data['lang']}'
 	                data-price='{$_product->get_price()}'
 	                data-currency='".get_woocommerce_currency()."'></div>";
@@ -83,34 +88,38 @@ class Yotpo_Shortcodes
 		$data = array();
 		$data['product_id'] = $product_id;
 		$data['app_key'] = $yotpo_settings['app_key'];
+		$_product = wc_get_product( $product_id );
+		if ( is_null( $_product ) || !$_product ) { return; }
 		$yotpo = new Yotpo( $yotpo_settings['app_key'], $yotpo_settings['secret'] );
 		$response = $yotpo->get_product_bottom_line( $data );
 		if ( !empty( $response ) ) {
-			if ( $response['status']['code'] && $response['response']['bottomline']['total_reviews'] > 0 ) {
+			if ( $response['status']['code'] && $response['status']['code'] === 200 && $response['response']['bottomline']['total_reviews'] > 0 ) {
 				$widget_product_data = wc_yotpo_get_product_data( wc_get_product( $product_id ) );
 				$html = "<div class='yotpo bottomLine'
 							data-product-id='{$product_id}'
 			   				data-url='{$widget_product_data['url']}'
 			   				data-lang='{$widget_product_data['lang']}'>
 		   				</div>";
-			} elseif ( ( $response['response']['bottomline']['total_reviews'] == 0 ) && ( !isset( $args['0'] ) || $args['0'] != "noempty" ) ) {
-				$html = "<div class='yotpo bottomline'>
-							<div class='yotpo-bottomline pull-left star-clickable'>
-								<span class='yotpo-stars'>
-									<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
-									<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
-									<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
-									<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
-									<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
-								</span>
-								<div class='yotpo-clr'></div>
-							</div>
-						</div><br>";
-			} else {
-				return;
-			}
+			} elseif ( !isset( $args['0'] ) || $args['0'] != "noempty"  ) {
+				return $this->show_empty_bottomline();
+			} else { return; }
 		}
 		return $html;
+	}
+
+	public function show_empty_bottomline() {
+		return "<div class='yotpo bottomline'>
+					<div class='yotpo-bottomline pull-left star-clickable'>
+						<span class='yotpo-stars'>
+							<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
+							<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
+							<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
+							<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
+							<span class='yotpo-icon yotpo-icon-empty-star pull-left'></span>
+						</span>
+						<div class='yotpo-clr'></div>
+					</div>
+				</div>";
 	}
 
 	public function yotpo_product_gallery( $args ) {
@@ -134,19 +143,19 @@ class Yotpo_Shortcodes
 			'mode' => 'top_rated', // top_rated or most_recent
 			'type' => 'per_product', // per_product, product, both or site
 			'count' => '9', // 3-9
-			'show_bottomline' => '1', 
+			'show_bottomline' => '1',
 			'autoplay_enabled' => '1',
 			'autoplay_speed' => '3000',
 			'show_navigation' => '1'), $args ) );
 		$html = "<div
 			class='yotpo yotpo-reviews-carousel'
-			data-background-color='{$background_color}' 
-			data-mode='{$mode}' 
-			data-type='{$type}' 
-			data-count='{$count}' 
-			data-show-bottomline='{$show_bottomline}' 
-			data-autoplay-enabled='{$autoplay_enabled}' 
-			data-autoplay-speed='{$autoplay_speed}' 
+			data-background-color='{$background_color}'
+			data-mode='{$mode}'
+			data-type='{$type}'
+			data-count='{$count}'
+			data-show-bottomline='{$show_bottomline}'
+			data-autoplay-enabled='{$autoplay_enabled}'
+			data-autoplay-speed='{$autoplay_speed}'
 			data-show-navigation='{$show_navigation}'";
 		if ( isset( $args['product_id'] ) ) {
 			$html .= "data-product-id='{$args['product_id']}'";
