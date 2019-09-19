@@ -99,7 +99,7 @@ class Yotpo_Shortcodes {
 		}
 		$curl = YRFW_API_Wrapper::get_instance();
 		$curl->init( $settings_instance['app_key'], $settings_instance['secret'] );
-		$response = json_decode( $curl->get_bottomline( $product_id ) );
+		$response = json_decode( $curl->get_product_bottomline( $product_id ) );
 		if ( ! empty( $response ) ) {
 			if ( $response->response->bottomline->total_reviews > 0 ) {
 				$product_handler     = YRFW_Product_Cache::get_instance();
