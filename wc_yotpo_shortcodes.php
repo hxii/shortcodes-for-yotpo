@@ -2,17 +2,16 @@
 /*
 * Plugin Name: Shortcodes for Yotpo
 * Description: This plugin adds the ability to use shortcodes to control the placement of Yotpo widgets.
-* Version: 1.2.0
+* Version: 1.2.1
 * Author: Paul Glushak
 * Author URI: http://paulglushak.com/
 * Plugin URI: http://paulglushak.com/shortcodes-for-yotpo/
 * WC requires at least: 3.1.0
-* WC tested up to: 3.7.0
+* WC tested up to: 3.8.0
 */
 
 /*
  * This plugin allows using shortcodes to display Yotpo widgets inside and oustide (applicable widgets only) of product pages e.g. page builders, sidebars, widgets etc.
- * See example usage at the bottom.
 */
 
 defined( 'ABSPATH' ) || die();
@@ -24,24 +23,53 @@ class Yotpo_Shortcodes {
 
 	/**
 	 * Run the init function on construction via action
+	 *
+	 * @since 1.2.0
 	 */
 	public function __construct() {
 		add_action( 'plugins_loaded', array( $this, 'init_shortcodes' ) );
 	}
 
 	/**
+	 * Set short transient for thank-you message
+	 *
+	 * @return void
+	 * @since 1.2.1
+	 */
+	public function activate() {
+		set_transient( 'yotpo_shortcodes_message', true, 5 );
+	}
+
+	/**
 	 * Registers all the shortcodes in WP
 	 *
 	 * @return void
+	 * @since 1.2.0
 	 */
 	public function init_shortcodes() {
 		if ( class_exists( 'YRFW_Reviews' ) ) {
+			if ( get_transient( 'yotpo_shortcodes_message' ) ) {
+				new YRFW_Messages( 'Thank you for installing <strong>Shortcodes for Yotpo</strong>! Please consider leaving a <a href="https://wordpress.org/support/plugin/shortcodes-for-yotpo/reviews/" target="_blank">review</a>, it really helps!', 'success', true, true );
+			}
 			add_shortcode( 'yotpo_widget', array( $this, 'yotpo_widget' ) );
 			add_shortcode( 'yotpo_bottomline', array( $this, 'yotpo_bottomline' ) );
+			add_shortcode( 'yotpo_questions', array( $this, 'yotpo_questions' ) );
 			add_shortcode( 'yotpo_product_gallery', array( $this, 'yotpo_product_gallery' ) );
 			add_shortcode( 'yotpo_product_reviews_carousel', array( $this, 'yotpo_product_reviews_carousel' ) );
 			add_shortcode( 'yotpo_badge', array( $this, 'yotpo_badge' ) );
 			add_shortcode( 'yotpo_testimonials', array( $this, 'yotpo_testimonials' ) );
+			add_shortcode( 'yotpo_highlights', array( $this, 'yotpo_highlights' ) );
+		} else {
+			add_action(
+				'admin_notices',
+				function() {
+					?>
+					<div class="notice notice-error">
+						<p>Please install and/or activate <a href="https://wordpress.org/plugins/yotpo-reviews-for-woocommerce/" target="_blank">Yotpo Reviews for WooCommerce</a> in order for Shortcodes for Yotpo to work.</p>
+					</div>
+					<?php
+				}
+			);
 		}
 	}
 
@@ -50,6 +78,7 @@ class Yotpo_Shortcodes {
 	 *
 	 * @param array $args product_id argument.
 	 * @return string
+	 * @since 1.2.0
 	 */
 	public function yotpo_widget( $args ) {
 		if ( isset( $args['product_id'] ) ) {
@@ -79,6 +108,7 @@ class Yotpo_Shortcodes {
 	 *
 	 * @param array $args product_id argument.
 	 * @return string
+	 * @since 1.2.0
 	 */
 	public function yotpo_bottomline( $args ) {
 		if ( ! class_exists( 'YRFW_API_Wrapper' ) ) {
@@ -119,9 +149,31 @@ class Yotpo_Shortcodes {
 	}
 
 	/**
+	 * Show questions widget
+	 *
+	 * @param array $args arguments.
+	 * @return void | string
+	 * @since 1.2.1
+	 */
+	public function yotpo_questions( $args ) {
+		$product_id = '';
+		if ( isset( $args['product_id'] ) ) {
+			$product_id = $args['product_id'];
+		} elseif ( is_product() ) {
+			global $product;
+			$product_id = $product->get_id();
+		} else {
+			return;
+		}
+		$html = "<div class='yotpo QABottomLine' data-product-id='$product_id'></div>";
+		return $html;
+	} 
+
+	/**
 	 * Show empty star rating code
 	 *
 	 * @return string
+	 * @since 1.2.0
 	 */
 	private function show_empty_bottomline() {
 		return "<div class='yotpo bottomline'>
@@ -143,6 +195,7 @@ class Yotpo_Shortcodes {
 	 *
 	 * @param array $args arguments accepts 'gallery_id', 'product_id' and 'noproduct'.
 	 * @return string
+	 * @since 1.2.0
 	 */
 	public function yotpo_product_gallery( $args ) {
 		if ( empty( $args['gallery_id'] ) ) { return 'Error - no gallery ID specified'; }
@@ -162,6 +215,7 @@ class Yotpo_Shortcodes {
 	 *
 	 * @param array $args arguments.
 	 * @return void
+	 * @since 1.2.0
 	 */
 	public function yotpo_product_reviews_carousel( $args ) {
 		extract(
@@ -209,6 +263,7 @@ class Yotpo_Shortcodes {
 	 * Show badge widget
 	 *
 	 * @return string
+	 * @since 1.2.0
 	 */
 	public function yotpo_badge() {
 		$html = "<div id='y-badges' class='yotpo yotpo-badge badge-init'>&nbsp;</div>";
@@ -219,11 +274,35 @@ class Yotpo_Shortcodes {
 	 * Show testimonials widget
 	 *
 	 * @return string
+	 * @since 1.2.0
 	 */
 	public function yotpo_testimonials() {
 		$html = "<div id='yotpo-testimonials-custom-tab'></div>";
 		return $html;
 	}
+
+	/**
+	 * Show review highlights widget
+	 *
+	 * @param array $args arguments.
+	 * @return void | string
+	 * @since 1.2.1
+	 */
+	public function yotpo_highlights( $args ) {
+		$product_id = '';
+		if ( isset( $args['product_id'] ) ) {
+			$product_id = $args['product_id'];
+		} elseif ( is_product() ) {
+			global $product;
+			$product_id = $product->get_id();
+		} else {
+			return;
+		}
+		$html = "<div class='yotpo yotpo-shoppers-say' data-product-id='{$product_id}'>&nbsp;</div>";
+		return $html;
+	}
 }
+
+register_activation_hook( __FILE__, array( 'Yotpo_Shortcodes', 'activate' ) );
 
 $shortcodes = new Yotpo_Shortcodes();
