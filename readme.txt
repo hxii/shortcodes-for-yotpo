@@ -3,8 +3,8 @@ Contributors: hxii
 Tags: yotpo, shortcode, shortcodes, yotpo add-on, yotpo shortcodes, shortcodes for yotpo
 Requires at least: 4.6
 Requires PHP: 5.6
-Tested up to: 5.2
-Stable tag: 1.1.5
+Tested up to: 5.3
+Stable tag: 1.1.6
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,9 @@ Get in touch, and I'll see what can be done.
 == Screenshots ==
 1. Example usage of the shortcodes.
 == Changelog ==
+= 1.1.6 =
+* Showing notice to warn users prior to updating to 1.2.X versions.
+* Checked with latest version of WP.
 = 1.1.5 =
 * Checked with WC 3.6.2 and WP 5.2
 * Minor fixes and cleanup

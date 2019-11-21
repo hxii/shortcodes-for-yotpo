@@ -2,12 +2,12 @@
 /*
 * Plugin Name: Shortcodes for Yotpo
 * Description: This plugin adds the ability to use shortcodes to control the placement of Yotpo widgets.
-* Version: 1.1.5
+* Version: 1.1.6
 * Author: Paul Glushak
 * Author URI: http://paulglushak.com/
 * Plugin URI: http://paulglushak.com/shortcodes-for-yotpo/
 * WC requires at least: 3.1.0
-* WC tested up to: 3.6.2
+* WC tested up to: 3.8.0
 */
 
 /*
@@ -36,6 +36,7 @@ class Yotpo_Shortcodes
 		add_shortcode( 'yotpo_product_reviews_carousel', array( $this, 'yotpo_product_reviews_carousel' ) );
 		add_shortcode( 'yotpo_badge', array( $this, 'yotpo_badge' ) );
 		add_shortcode( 'yotpo_testimonials', array( $this, 'yotpo_testimonials' ) );
+		add_action( 'admin_notices', array( $this, 'show_upgrade_message' ) );
 	}
 	/**
 	 * Basic dependency check, to be replaced with class requirement
@@ -53,6 +54,15 @@ class Yotpo_Shortcodes
 				die();
 			}
 		}
+	}
+
+	public function show_upgrade_message() {
+		?>
+		<div class="notice notice-warning">
+			<p><strong>Shortcodes for Yotpo</strong> - Please note that the next update of Shortcodes for Yotpo (version 1.2.1) will require <a href="https://wordpress.org/plugins/yotpo-reviews-for-woocommerce/" target="_blank">Yotpo Reviews for WooCommerce (YRFW)</a> to function.
+			<br>Please make sure you install and configure YRFW when updating Shortcodes for Yotpo. For more information, please see <a href="https://paulglushak.com/shortcodes-for-yotpo/shortcodes-for-yotpo-1-2-0" target="_blank">here</a>.</p>
+		</div>
+		<?php
 	}
 
 	public function yotpo_widget( $args ) {
@@ -184,6 +194,6 @@ class Yotpo_Shortcodes
 	}
 }
 
-new Yotpo_Shortcodes;
+new Yotpo_Shortcodes();
 
 ?>
