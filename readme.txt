@@ -4,7 +4,7 @@ Tags: yotpo, shortcode, shortcodes, yotpo add-on, yotpo shortcodes, shortcodes f
 Requires at least: 4.6
 Requires PHP: 7.0
 Tested up to: 5.3
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,9 +47,15 @@ Get in touch, and I'll see what can be done.
 == Screenshots ==
 1. Example usage of the shortcodes.
 == Changelog ==
+= 1.2.1 =
+* Code cleanup.
+* Added review highlights widget `[yotpo_highlights]` with optional `product_id` argument.
+* Added Q&A widget `[yotpo_questions]` with optional `product_id` argument.
+= 1.2.0 =
+* Now using Yotpo Reviews for WooCommerce (YRFW) as requirement.
 = 1.1.6 =
-* Updated the code to be used with Yotpo Reviews for WooCommerce version 2.0 (https://github.com/hxii/YRFW).
-* Checked with WC 3.7.0 and WP 5.3 (5.3-alpha-45923).
+* Showing notice to warn users prior to updating to 1.2.X versions.
+* Checked with latest version of WP.
 = 1.1.5 =
 * Checked with WC 3.6.2 and WP 5.2
 * Minor fixes and cleanup
