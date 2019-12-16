@@ -12,7 +12,7 @@ This plugin adds the ability to use shortcodes to control the placement of Yotpo
 
 == Description ==
 = Prerequisites (Important) =
-* The Yotpo plugin must be installed (obviously).
+* The [Yotpo Reviews for WooCommerce plugin](https://wordpress.org/plugins/yotpo-reviews-for-woocommerce/) **MUST** be installed for this plugin to work.
 * WooCommerce 3.X and above (due to new methods).
 This plugin allows using shortcodes to display Yotpo widgets inside and oustide (applicable widgets only) of product pages e.g. page builders, sidebars, widgets etc.
 
