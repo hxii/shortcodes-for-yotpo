@@ -106,7 +106,7 @@ class Yotpo_Shortcodes {
 	/**
 	 * Show star rating widget
 	 *
-	 * @param array $args product_id argument.
+	 * @param array $args product_id, noempty arguments.
 	 * @return string
 	 * @since 1.2.0
 	 */
@@ -151,7 +151,7 @@ class Yotpo_Shortcodes {
 	/**
 	 * Show questions widget
 	 *
-	 * @param array $args arguments.
+	 * @param array $args product_id argument.
 	 * @return void | string
 	 * @since 1.2.1
 	 */
