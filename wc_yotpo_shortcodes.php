@@ -131,7 +131,7 @@ class Yotpo_Shortcodes {
 		$curl->init( $settings_instance['app_key'], $settings_instance['secret'] );
 		$response = json_decode( $curl->get_product_bottomline( $product_id ) );
 		if ( ! empty( $response ) ) {
-			if ( $response->response->bottomline->total_reviews > 0 ) {
+			if ( $response->status->code != 404 && $response->response->bottomline->total_reviews > 0 ) {
 				$product_handler     = YRFW_Product_Cache::get_instance();
 				$widget_product_data = $product_handler->get_cached_product( $product_id );
 				$html                = "<div class='yotpo bottomLine'
