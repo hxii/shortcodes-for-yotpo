@@ -47,6 +47,8 @@ Get in touch, and I'll see what can be done.
 == Screenshots ==
 1. Example usage of the shortcodes.
 == Changelog ==
+= 1.2.2 =
+* Fixed error when using `[yotpo_bottomline]` wiht a non-existing (in Yotpo) product. 
 = 1.2.1 =
 * Code cleanup.
 * Added review highlights widget `[yotpo_highlights]` with optional `product_id` argument.
