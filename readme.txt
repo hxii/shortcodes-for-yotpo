@@ -3,8 +3,8 @@ Contributors: hxii
 Tags: yotpo, shortcode, shortcodes, yotpo add-on, yotpo shortcodes, shortcodes for yotpo
 Requires at least: 4.6
 Requires PHP: 7.0
-Tested up to: 5.3
-Stable tag: 1.2.2
+Tested up to: 5.5
+Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,9 @@ Get in touch, and I'll see what can be done.
 == Screenshots ==
 1. Example usage of the shortcodes.
 == Changelog ==
+= 1.2.3 =
+* Tested with WooCommerce 4.1.0-rc.1 and WordPress 5.5-alpha-47623.
+* Fixed exception in `yotpo_bottomline` when Yotpo API is unreachable.
 = 1.2.2 =
 * Fixed error when using `[yotpo_bottomline]` wiht a non-existing (in Yotpo) product. 
 = 1.2.1 =

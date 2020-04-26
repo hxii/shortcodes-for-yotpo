@@ -2,12 +2,12 @@
 /*
 * Plugin Name: Shortcodes for Yotpo
 * Description: This plugin adds the ability to use shortcodes to control the placement of Yotpo widgets.
-* Version: 1.2.2
+* Version: 1.2.3
 * Author: Paul Glushak
 * Author URI: http://paulglushak.com/
 * Plugin URI: http://paulglushak.com/shortcodes-for-yotpo/
 * WC requires at least: 3.1.0
-* WC tested up to: 3.8.0
+* WC tested up to: 4.1.0
 */
 
 /*
@@ -130,6 +130,7 @@ class Yotpo_Shortcodes {
 		$curl = YRFW_API_Wrapper::get_instance();
 		$curl->init( $settings_instance['app_key'], $settings_instance['secret'] );
 		$response = json_decode( $curl->get_product_bottomline( $product_id ) );
+		$html     = '';
 		if ( ! empty( $response ) ) {
 			if ( 200 === $response->status->code && $response->response->bottomline->total_reviews > 0 ) {
 				$product_handler     = YRFW_Product_Cache::get_instance();
