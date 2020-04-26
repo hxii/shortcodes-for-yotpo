@@ -3,7 +3,7 @@ Contributors: hxii
 Tags: yotpo, shortcode, shortcodes, yotpo add-on, yotpo shortcodes, shortcodes for yotpo
 Requires at least: 4.6
 Requires PHP: 7.0
-Tested up to: 5.3
+Tested up to: 5.5
 Stable tag: 1.2.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
