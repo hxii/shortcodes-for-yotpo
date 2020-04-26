@@ -49,6 +49,7 @@ Get in touch, and I'll see what can be done.
 == Changelog ==
 = 1.2.3 =
 * Tested with WooCommerce 4.1.0-rc.1 and WordPress 5.5-alpha-47623.
+* Fixed exception in `yotpo_bottomline` when Yotpo API is unreachable.
 = 1.2.2 =
 * Fixed error when using `[yotpo_bottomline]` wiht a non-existing (in Yotpo) product. 
 = 1.2.1 =
