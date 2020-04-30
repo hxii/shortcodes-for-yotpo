@@ -140,6 +140,9 @@ class Yotpo_Shortcodes {
 									data-url='{$widget_product_data['url']}'
 									data-lang='{$widget_product_data['lang']}'>
 									</div>";
+				if ( is_category() || is_archive() ) {
+					$html = "<a href='{$widget_product_data['url']}'>{$html}</a>";
+				}
 			} elseif ( ! isset( $args['0'] ) || 'noempty' !== $args['0'] ) {
 				return $this->show_empty_bottomline();
 			} else {
